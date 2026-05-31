@@ -17,3 +17,52 @@ export default function NavBar() {
     </nav>
   );
 }
+'use client';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
+
+export default function NavBar() {
+  const { data: session } = useSession();
+
+  return (
+    <nav style={{ 
+      height: '60px', 
+      background: '#24292e', 
+      color: 'white', 
+      display: 'flex', 
+      alignItems: 'center', 
+      padding: '0 2rem',
+      justifyContent: 'space-between'
+    }}>
+      <h1 style={{ margin: 0, fontSize: '1.2rem' }}>Git-Map-Hub</h1>
+      
+      <div>
+        {session ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Image 
+              src={session.user.image} 
+              alt="Profile" 
+              width={32} 
+              height={32} 
+              style={{ borderRadius: '50%' }}
+            />
+            <span>{session.user.name}</span>
+            <button 
+              onClick={() => signOut()}
+              style={{ padding: '0.5rem 1rem', cursor: 'pointer', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px' }}
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={() => signIn('github')}
+            style={{ padding: '0.5rem 1rem', cursor: 'pointer', background: '#2ea043', color: 'white', border: 'none', borderRadius: '4px' }}
+          >
+            Login with GitHub
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+}
