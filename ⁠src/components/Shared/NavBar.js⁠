@@ -1,0 +1,19 @@
+export default function NavBar() {
+  return (
+    <nav style={{ 
+      height: '60px', 
+      background: '#24292e', 
+      color: 'white', 
+      display: 'flex', 
+      alignItems: 'center', 
+      padding: '0 2rem',
+      justifyContent: 'space-between'
+    }}>
+      <h1 style={{ margin: 0, fontSize: '1.2rem' }}>Git-Map-Hub</h1>
+      <div>
+        {/* Placeholder for NextAuth Login/Logout buttons */}
+        <button style={{ padding: '0.5rem 1rem', cursor: 'pointer' }}>Login with GitHub</button>
+      </div>
+    </nav>
+  );
+}
