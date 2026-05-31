@@ -1,0 +1,6 @@
+// Utility for merging tailwind classes, formatting dates, etc.
+// Kept empty for initial setup.
+
+export function formatCoords(lat, lng) {
+  return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+}
