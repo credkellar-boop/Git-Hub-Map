@@ -1,0 +1,31 @@
+import { AccessToken } from 'livekit-server-sdk';
+import { NextResponse } from 'next/server';
+
+export async function POST(request) {
+  try {
+    const { repoId, username } = await request.json();
+
+    if (!repoId || !username) {
+      return NextResponse.json({ error: 'Missing repoId or username' }, { status: 400 });
+    }
+
+    const apiKey = process.env.LIVEKIT_API_KEY;
+    const apiSecret = process.env.LIVEKIT_API_SECRET;
+
+    const at = new AccessToken(apiKey, apiSecret, {
+      identity: username,
+      ttl: '2h',
+    });
+
+    at.addGrant({
+      roomJoin: true,
+      room: repoId,
+      canPublish: true,
+      canSubscribe: true,
+    });
+
+    return NextResponse.json({ token: await at.toJwt() });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
