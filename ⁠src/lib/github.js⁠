@@ -1,0 +1,28 @@
+// A utility function to fetch GitHub data. 
+// For now, it returns mock data formatted for the map.
+
+export function getMockRepos() {
+  return [
+    {
+      id: 'monad-hft-node',
+      name: 'Monad-HFT-Node',
+      description: 'High-frequency trading node architecture',
+      lat: 34.0522, // Los Angeles
+      lng: -118.2437,
+    },
+    {
+      id: 'crypto-notify',
+      name: 'Cryptocurrency-Notification',
+      description: 'Real-time price alert system',
+      lat: 51.5074, // London
+      lng: -0.1278,
+    },
+    {
+      id: 'git-map-hub',
+      name: 'Git-Map-Hub',
+      description: 'Spatial collaboration platform',
+      lat: 35.6895, // Tokyo
+      lng: 139.6917,
+    }
+  ];
+}
