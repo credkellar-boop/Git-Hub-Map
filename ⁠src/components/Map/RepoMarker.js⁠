@@ -1,0 +1,13 @@
+import { AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+
+export default function RepoMarker({ repo, onClick }) {
+  return (
+    <AdvancedMarker
+      position={{ lat: repo.lat, lng: repo.lng }}
+      onClick={onClick}
+      title={repo.name}
+    >
+      <Pin background={'#24292e'} borderColor={'#ffffff'} glyphColor={'#ffffff'} />
+    </AdvancedMarker>
+  );
+}
