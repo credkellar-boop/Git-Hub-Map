@@ -1,0 +1,11 @@
+import { Chat } from '@livekit/components-react';
+
+export default function MessagingOverlay() {
+  // The LiveKit Chat component automatically hooks into the 
+  // current LiveKitRoom context to send data channel messages.
+  return (
+    <div style={{ height: '100%', overflowY: 'auto', padding: '1rem' }}>
+      <Chat />
+    </div>
+  );
+}
