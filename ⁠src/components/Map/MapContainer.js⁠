@@ -1,31 +1,32 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
-import { getMockRepos } from '@/lib/github';
+import { getLiveRepos } from '@/lib/github';
 
 export default function MapContainer({ onRepoSelect }) {
-  const repos = getMockRepos();
+  const { data: session } = useSession();
+  const [repos, setRepos] = useState([]);
+
+  useEffect(() => {
+    if (session?.accessToken) {
+      getLiveRepos(session.accessToken).then(setRepos);
+    }
+  }, [session]);
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
-        <Map
-          defaultCenter={{ lat: 20, lng: 0 }}
-          defaultZoom={2}
-          mapId={'YOUR_MAP_ID_HERE'} // Get this from Google Maps Cloud console
-          gestureHandling={'greedy'}
-          disableDefaultUI={true}
-        >
-          {repos.map((repo) => (
-            <AdvancedMarker
-              key={repo.id}
-              position={{ lat: repo.lat, lng: repo.lng }}
-              onClick={() => onRepoSelect(repo)}
-            >
-              <Pin background={'#2ea043'} glyphColor={'#ffffff'} borderColor={'#fff'} />
-            </AdvancedMarker>
-          ))}
-        </Map>
-      </APIProvider>
-    </div>
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
+      <Map defaultCenter={{ lat: 20, lng: 0 }} defaultZoom={2} mapId="GIT_MAP_HUB_THEME">
+        {repos.map((repo) => (
+          <AdvancedMarker 
+            key={repo.id} 
+            position={{ lat: repo.lat, lng: repo.lng }}
+            onClick={() => onRepoSelect(repo)} 
+          >
+            <Pin background={'#2ea043'} />
+          </AdvancedMarker>
+        ))}
+      </Map>
+    </APIProvider>
   );
 }
