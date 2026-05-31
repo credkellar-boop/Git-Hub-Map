@@ -1,0 +1,33 @@
+import { useEffect, useState } from 'react';
+import { LiveKitRoom, VideoConference } from '@livekit/components-react';
+import '@livekit/components-styles';
+
+export default function RoomInterface({ repoId }) {
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    // In a real app, you'd pass the actual NextAuth session username here
+    fetch('/api/livekit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ repoId, username: `Dev_${Math.floor(Math.random() * 1000)}` }),
+    })
+      .then((res) => res.json())
+      .then((data) => setToken(data.token));
+  }, [repoId]);
+
+  if (!token) return <div>Generating secure token...</div>;
+
+  return (
+    <LiveKitRoom
+      video={true}
+      audio={true}
+      token={token}
+      serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+      data-lk-theme="default"
+      style={{ height: '100%' }}
+    >
+      <VideoConference />
+    </LiveKitRoom>
+  );
+}
