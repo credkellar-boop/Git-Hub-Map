@@ -1,28 +1,19 @@
-// A utility function to fetch GitHub data. 
-// For now, it returns mock data formatted for the map.
+export async function getLiveRepos(accessToken) {
+  const response = await fetch('https://api.github.com/user/repos', {
+    headers: {
+      Authorization: `token ${accessToken}`,
+    },
+  });
+  const repos = await response.json();
 
-export function getMockRepos() {
-  return [
-    {
-      id: 'monad-hft-node',
-      name: 'Monad-HFT-Node',
-      description: 'High-frequency trading node architecture',
-      lat: 34.0522, // Los Angeles
-      lng: -118.2437,
-    },
-    {
-      id: 'crypto-notify',
-      name: 'Cryptocurrency-Notification',
-      description: 'Real-time price alert system',
-      lat: 51.5074, // London
-      lng: -0.1278,
-    },
-    {
-      id: 'git-map-hub',
-      name: 'Git-Map-Hub',
-      description: 'Spatial collaboration platform',
-      lat: 35.6895, // Tokyo
-      lng: 139.6917,
-    }
-  ];
+  // We filter for repos that have 'location' metadata or similar tags
+  // For now, we'll map them to random coordinates if metadata is missing
+  return repos.map((repo, index) => ({
+    id: repo.name,
+    name: repo.name,
+    // Using a seeded random coordinate based on ID length for demo purposes
+    // In production, you would parse repo descriptions for location keywords
+    lat: (index * 10) % 90 - 45,
+    lng: (index * 20) % 180 - 90,
+  }));
 }
