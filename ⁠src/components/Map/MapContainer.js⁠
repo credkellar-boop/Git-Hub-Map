@@ -1,0 +1,26 @@
+import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import RepoMarker from './RepoMarker';
+import { getMockRepos } from '@/lib/github';
+
+export default function MapContainer({ onRepoSelect }) {
+  const repos = getMockRepos();
+
+  return (
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
+      <Map
+        defaultCenter={{ lat: 20, lng: 0 }}
+        defaultZoom={3}
+        mapId="GIT_MAP_HUB_THEME"
+        disableDefaultUI={true}
+      >
+        {repos.map((repo) => (
+          <RepoMarker 
+            key={repo.id} 
+            repo={repo} 
+            onClick={() => onRepoSelect(repo)} 
+          />
+        ))}
+      </Map>
+    </APIProvider>
+  );
+}
